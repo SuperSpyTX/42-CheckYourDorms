@@ -182,7 +182,6 @@ window.onload = function() {
         var circle = $(document.createElementNS("http://www.w3.org/2000/svg", 'circle'));
         circle.attr('fill', color);
         circle.attr('debug-hours', hours);
-        circle.attr('debug-hours-ft_42', hours - (moment(sortme[startWeekId].hours, "HH:mm:ss").hours()) - (moment(sortme[startWeekId - 1].hours, "HH:mm:ss").hours()));
         circle.attr('cx', parseInt(x + 26));
         circle.attr('cy', parseInt(y + 8));
         circle.attr('r', 3);
