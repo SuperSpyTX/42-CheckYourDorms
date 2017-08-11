@@ -1,9 +1,13 @@
 # Check Your Dorms
 A userscript / chrome extension to check your eligibility to stay in the dorms.
 
-This combines the total hours in the week (from Sunday to Saturday) and produces 
+This combines the total hours in the week (from Sunday to Saturday) and produces nicely colored output according to hours accumulated (>=38 hours a week would appear green, red otherwise).
 
 ![](extension_screenshot2.png)
+
+Inspired by an new project initiative called Check Your Dorms to peer check dorm eligibility.  
+
+To be eligible to stay, it requires 38 hours a week in the lab, 2 exams completed (unless finished) and 1 level a month.
 
 # Installing
 
