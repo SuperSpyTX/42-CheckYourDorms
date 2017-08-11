@@ -1,4 +1,4 @@
-# 42-CheckYourDorms
+# Check Your Dorms
 A userscript / chrome extension (soon) to check your eligibility to stay in the dorms.
 
 This combines the total hours in the week (from Sunday to Saturday) and produces 
@@ -13,6 +13,6 @@ This combines the total hours in the week (from Sunday to Saturday) and produces
 
 - If you don't trust me (most people don't, spoiler alert), you can compile the said script yourself by using Chrome's Developer tools and pack the [chrome_ext](chrome_ext) directory.  The symlink to content_script.js is intentional to prevent issues.
 
-# Contribute
+### Contributing
 
 My rules are simple.  Send a pull request, I'll check it out when I can.
