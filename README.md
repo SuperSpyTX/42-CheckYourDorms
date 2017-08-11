@@ -1,5 +1,5 @@
 # Check Your Dorms
-A userscript / chrome extension (soon) to check your eligibility to stay in the dorms.
+A userscript / chrome extension to check your eligibility to stay in the dorms.
 
 This combines the total hours in the week (from Sunday to Saturday) and produces 
 
