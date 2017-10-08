@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Check Your Dorms (Hours)
 // @namespace    https://github.com/SuperSpyTX/42-CheckYourDorms
-// @version      0.2 (RC1)
+// @version      0.2.1 (RC1)
 // @description  Check someone's intra profile to see if they're eligible to stay in the dorms, by calculating hours total per week.  It shows up Red if they have less than 38 hours, Green otherwise.
 // @author       SuperSpyTX
 // @match        https://profile.intra.42.fr/*
@@ -146,9 +146,6 @@ window.onload = function() {
         // Add the fix from issue #1
         hours += Math.round(minutes / 60);
 
-        if (hours < 1)
-            continue;
-
         var x = sortme[endWeekId].x;
         var y = sortme[endWeekId].y;
         if (eowBoundary[currDate.endOf('week').format('YYYY-MM-DD')])
@@ -205,7 +202,7 @@ window.onload = function() {
         circle.attr('cy', parseInt(y + 8));
         circle.attr('r', 5);
         $(grp).attr('data-toggle', 'tooltip');
-        $(grp).attr('data-original-title', hours + " hour" + (hours != 1 && hours < 100 ? "s" : hours > 99 ? "s! 🍪" : ""));
+        $(grp).attr('data-original-title', (hours === 0 ? "No hours" : hours + " hour" + (hours != 1 && hours < 100 ? "s" : hours > 99 ? "s! 🍪" : "")));
         $(grp).append(circle);
         $(grp).tooltip({container: 'body'});
         $("#user-locations").append(grp);
