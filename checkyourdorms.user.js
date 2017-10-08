@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Check Your Dorms (Hours)
 // @namespace    https://github.com/SuperSpyTX/42-CheckYourDorms
-// @version      0.1
+// @version      0.2 (RC1)
 // @description  Check someone's intra profile to see if they're eligible to stay in the dorms, by calculating hours total per week.  It shows up Red if they have less than 38 hours, Green otherwise.
-// @author       jkrause
+// @author       SuperSpyTX
 // @match        https://profile.intra.42.fr/*
 // @require      https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js
 // @grant        none
@@ -17,12 +17,12 @@ window.onload = function() {
         // Element doesn't exist.
         return;
     }
+    var lowerSelfEsteem = false; // set it to true for full effect.
     var sortme = [];
     var eowBoundary = {};
     var objkey = {};
     var ct = 0;
-    for (var a in data)
-    {
+    for (var a in data) {
         sortme.push({"date": a, "hours": data[a], x: 0, y: 0});
     }
     sortme.sort(function(a,b){
@@ -122,15 +122,17 @@ window.onload = function() {
         }
         lock = 0;
 
-        if (( moment().month() - moment(sortme[startWeekId].date).month()) > 3)
+        if (( moment().week() - moment(sortme[startWeekId].date).week()) > 8)
             continue;
 
         // Calculate hours.
         var hours = 0;
+        var minutes = 0;
         for (var id = endWeekId; id <= startWeekId; id++)
         {
             var m = moment(sortme[id].hours, "HH:mm:ss");
             var hCt = m.hours();
+            var mCt = m.minutes();
 
             // If the hours are bugged.. skip them, they do not contribute value.
             // Also this fixes "Wrong data sent.  Contact your pedagogic team."
@@ -138,7 +140,14 @@ window.onload = function() {
                 continue;
 
             hours += hCt;
+            minutes += mCt;
         }
+
+        // Add the fix from issue #1
+        hours += Math.round(minutes / 60);
+
+        if (hours < 1)
+            continue;
 
         var x = sortme[endWeekId].x;
         var y = sortme[endWeekId].y;
@@ -147,11 +156,11 @@ window.onload = function() {
             x = eowBoundary[currDate.endOf('week').format('YYYY-MM-DD')].x;
             y = eowBoundary[currDate.endOf('week').format('YYYY-MM-DD')].y;
         }
-        else if (endWeekId === 0 && eowBoundary[moment().format('YYYY-MM-DD')])
-        {
-            x = eowBoundary[moment().format('YYYY-MM-DD')].x;
-            y = eowBoundary[moment().format('YYYY-MM-DD')].y;
-        }
+        //else if (endWeekId === 0 && eowBoundary[moment().format('YYYY-MM-DD')])
+        //{
+        //    x = eowBoundary[moment().format('YYYY-MM-DD')].x;
+        //    y = eowBoundary[moment().format('YYYY-MM-DD')].y;
+        //}
 
         var color = "#00aa00";
         if (hours < 38)
@@ -161,10 +170,9 @@ window.onload = function() {
             // I tried to do some sort of gradient thing.
             // If you want to give it a shot, go for it.
             // But I like the standard colors better.
-            if (window.secretDeveloperFeatures) {
+            if (hours > 30) {
                 var n1 = (170 * (hours / 38));
                 var n2 = 170 - 170 * (hours / 38);
-                console.log(n1 + " - " + n2);
                 if (n1 < 16)
                     n1 = "0" + parseInt(n1).toString(16);
                 else
@@ -175,8 +183,19 @@ window.onload = function() {
                     n2 = parseInt(n2).toString(16);
                 if (n2 - 170 > 10)
                     n1 = "00";
+                if (hours < 38)
+                {
+                    n1 = (parseInt(n1, 16) - 50).toString(16);
+                   // n2 = (parseInt(n2, 16) + Math.round(parseInt(n2, 16) / 2)).toString(16);
+                }
                 color = "#" + n2 + n1 + "00";
             }
+        } else if (hours > 99) {
+            // Congratulations, you get a cookie.
+            color = "#00aaaa";
+        } else if (hours > 160) {
+            // at this point, they are a cheater.
+            color = "#aa0000";
         }
         var grp = document.createElementNS("http://www.w3.org/2000/svg", 'g');
         var circle = $(document.createElementNS("http://www.w3.org/2000/svg", 'circle'));
@@ -184,9 +203,9 @@ window.onload = function() {
         circle.attr('debug-hours', hours);
         circle.attr('cx', parseInt(x + 26));
         circle.attr('cy', parseInt(y + 8));
-        circle.attr('r', 3);
+        circle.attr('r', 5);
         $(grp).attr('data-toggle', 'tooltip');
-        $(grp).attr('data-original-title', hours + " hours");
+        $(grp).attr('data-original-title', hours + " hour" + (hours != 1 && hours < 100 ? "s" : hours > 99 ? "s! 🍪" : ""));
         $(grp).append(circle);
         $(grp).tooltip({container: 'body'});
         $("#user-locations").append(grp);
