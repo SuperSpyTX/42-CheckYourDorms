@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Check Your Dorms",
-	"version": "0.1",
+	"version": "0.2.2",
 	"description": "Check someone's intra profile to see if they're eligible to stay in the dorms, by calculating hours total per week.  It shows up red if they have less than 38 hours, green otherwise.",
 	"content_scripts": 
 	[
