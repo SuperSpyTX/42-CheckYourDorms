@@ -7,7 +7,7 @@ This combines the total hours in the week (from Sunday to Saturday) and produces
 
 Inspired by an new project initiative called Check Your Dorms to peer check dorm eligibility.  
 
-To be eligible to stay, it requires 38 hours a week in the lab, 2 exams completed (unless finished) and 1 level a month.
+To be eligible to stay, it requires 38 hours a week in the lab, 2 exams, and 1 level a month.
 
 # Installing
 
